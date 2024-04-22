@@ -7,4 +7,5 @@
 <b>Project for Hatio Innovations Private Limited.</b><br>
 <br>
 <br>
-<b>Link to access my project</b> -  [ https://suryatodo2024.netlify.app/](https://suryatodocrudproject.netlify.app/)
+<b>Check my executed project</b> - https://suryatodocrudproject.netlify.app/
+
