@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Todo-CRUD</title>
+    <meta charset="windows-1252">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .container {
+            overflow: hidden
+        }
+
+        .tab {
+            float: left;
+        }
+
+        .tab-2 {
+            margin-left: 50px
+        }
+
+        .tab-2 input {
+            display: block;
+            margin-bottom: 10px
+        }
+
+        tr {
+            transition: all .25s ease-in-out
+        }
+
+        tr:hover {
+            background-color: #EEE;
+            cursor: pointer
+        }
+
+        body {
+            font-family: sans-serif;
+            margin: 0 50px;
+            background-color: #caf0f8;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .app .mb-3 {
+            font-weight: 800;
+        }
+
+        .app .views {
+            font-weight: 800;
+        }
+
+        .app {
+            background-color: #fff;
+            width: 300px;
+            height: 500px;
+            border: 5px solid #a2d2ff;
+            border-radius: 8px;
+            padding: 15px;
+            overflow-y: scroll;
+        }
+
+        .app::-webkit-scrollbar {
+            width: 0 !important;
+        }
+
+        #addNew {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #bde0fe;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .fa-plus {
+            background-color: #0b93bc;
+            padding: 3px;
+            border-radius: 3px;
+        }
+
+        #tasks {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        #tasks div {
+            border: 3px solid #0b93bc;
+            background-color: #e2eede;
+            border-radius: 6px;
+            padding: 5px;
+            display: grid;
+            gap: 4px;
+        }
+
+        #tasks div .options {
+            justify-self: center;
+            display: flex;
+            gap: 20px;
+        }
+
+        #tasks div .options i {
+            cursor: pointer;
+        }
+
+        #msg {
+            color: red;
+        }
+    </style>
+
+</head>
+
+
+
+<body>
+    <div class="container">
+        <h1>Todo Project 2024</h1>
+
+        <div class="tab tab-1">
+            <table id="table" border="1">
+                <tr>
+                    <th>Task</th>
+                    <th>Due date</th>
+                    <th>Time to do(hrs)</th>
+                    <th>Status</th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="tab tab-2">
+            <p>Task Name :</p>
+            <input type="text" name="task" id="task">
+
+            <p>Due Date</p>
+            <input type="date" class="form-control" placeholder="YYYY-MM-DD" required
+                pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="Due Date" id="dateInput">
+
+            <p>Time Required(hrs)</p>
+            <input type="text" name='todo' id='todo'>
+
+            <p>Status:</p>
+            <select name="status" id="status1">
+                <option value="Started">Started</option>
+                <option value="In-progress">In-progress</option>
+                <option value="Completed">Completed</option>
+            </select>
+
+            <br>
+            <br>
+            <button onclick="addHtmlTableRow();">Add</button>
+            <button onclick="editHtmlTbleSelectedRow();">Edit</button>
+            <button onclick="removeSelectedRow();">Remove</button>
+        </div>
+    </div>
+    <script>
+
+        var rIndex,
+            table = document.getElementById("table");
+
+        // check the empty input
+        function checkEmptyInput() {
+            var isEmpty = false,
+                task = document.getElementById("task").value,
+                dateInput = document.getElementById("dateInput").value,
+                todo = document.getElementById("todo").value,
+                status1 = document.getElementById("status1").value;
+
+            if (task === "") {
+                alert("Task Connot Be Empty");
+                isEmpty = true;
+            }
+            else if (dateInput === "") {
+                alert("Due date Connot Be Empty");
+                isEmpty = true;
+            }
+            else if (todo === "") {
+                alert("Enter the duration");
+                isEmpty = true;
+            }
+            else if (status1 === "") {
+                alert("Status Connot Be Empty");
+                isEmpty = true;
+            }
+            return isEmpty;
+        }
+
+        // add Row
+        function addHtmlTableRow() {
+            // get the table by id
+            // create a new row and cells
+            // get value from input text
+            // set the values into row cell's
+            if (!checkEmptyInput()) {
+                var newRow = table.insertRow(table.length),
+                    cell1 = newRow.insertCell(0),
+                    cell2 = newRow.insertCell(1),
+                    cell3 = newRow.insertCell(2),
+                    cell4 = newRow.insertCell(3),
+                    task = document.getElementById("task").value,
+                    dateInput = document.getElementById("dateInput").value,
+                    todo = document.getElementById("todo").value,
+                    status1 = document.getElementById("status1").value;
+
+                cell1.innerHTML = task;
+                cell2.innerHTML = dateInput;
+                cell3.innerHTML = todo;
+                cell4.innerHTML = status1;
+                // call the function to set the event to the new row
+                selectedRowToInput();
+            }
+        }
+
+        // display selected row data into input text
+        function selectedRowToInput() {
+
+            for (var i = 1; i < table.rows.length; i++) {
+                table.rows[i].onclick = function () {
+                    // get the seected row index
+                    rIndex = this.rowIndex;
+                    document.getElementById("task").value = this.cells[0].innerHTML;
+                    document.getElementById("dateInput").value = this.cells[1].innerHTML;
+                    document.getElementById("todo").value = this.cells[1].innerHTML;
+                    document.getElementById("status1").value = this.cells[2].innerHTML;
+                };
+            }
+        }
+        selectedRowToInput();
+
+        function editHtmlTbleSelectedRow() {
+            var task = document.getElementById("task").value,
+                dateInput = document.getElementById("dateInput").value,
+                todo = document.getElementById("todo").value,
+                status1 = document.getElementById("status1").value;
+            if (!checkEmptyInput()) {
+                table.rows[rIndex].cells[0].innerHTML = task;
+                table.rows[rIndex].cells[1].innerHTML = dateInput;
+                table.rows[rIndex].cells[2].innerHTML = todo;
+                table.rows[rIndex].cells[3].innerHTML = status1;
+            }
+        }
+
+        function removeSelectedRow() {
+            table.deleteRow(rIndex);
+            // clear input text
+            document.getElementById("task").value = "";
+            document.getElementById("dateInput").value = "";
+            document.getElementById("todo").value = "";
+            document.getElementById("status1").value = "";
+        }
+    </script>
+    <!-- <p>Project by Surya A</p> -->
+</body>
+
+</html>
